@@ -1,0 +1,61 @@
+<div class="registrationPage">
+
+  <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Inscription</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <form>
+        <ion-item lines="full">
+          <ion-label position="floating">Prénom</ion-label>
+          <ion-input type="text" required [(ngModel)]="person.firstname" name="firstname"></ion-input>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Genre</ion-label>
+          <ion-input type="text" required [(ngModel)]="person.gender" name="firstname"></ion-input>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Login</ion-label>
+          <ion-input type="text" required [(ngModel)]="person.login" name="firstname"></ion-input>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="text" required [(ngModel)]="person.email" name="email"></ion-input>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Mot de passe</ion-label>
+          <ion-input type="password" required [(ngModel)]="person.password" name="password"></ion-input>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Ville</ion-label>
+          <ion-input type="text" required [(ngModel)]="person.boxCity" name="boxCity"></ion-input>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Job</ion-label>
+          <ion-input type="text" required [(ngModel)]="person.job" name="job"></ion-input>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Bio</ion-label>
+          <ion-input type="text" required [(ngModel)]="person.biography" name="biography"></ion-input>
+        </ion-item>
+
+        <ion-row>
+          <ion-col>
+            <ion-button type="submit" color="danger" expand="block" (click) = "userRegister()" [routerLink]="['/swipe']">S'inscrire</ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+  </ion-content>
+</div>

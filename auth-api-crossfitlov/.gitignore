@@ -1,0 +1,13 @@
+/docs/
+/var/*
+!/var/logs
+/var/logs/*
+!var/logs/.gitkeep
+/vendor/
+*.exe
+*.out
+debug
+/.vscode
+/.idea
+main
+vide.*

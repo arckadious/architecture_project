@@ -1,0 +1,31 @@
+FROM debian:9 AS compile-image
+
+ENV GOROOT=/usr/local/go
+ENV PATH=$GOROOT/bin:$PATH 
+
+RUN apt-get update -yq \
+&& apt-get -y upgrade \
+&& apt-get install curl gnupg -yq 
+
+RUN curl -o go1.15.3.tar.gz https://dl.google.com/go/go1.15.3.linux-amd64.tar.gz \
+&& tar -xf go1.15.3.tar.gz
+
+RUN mv go /usr/local
+
+RUN apt-get clean -y
+
+COPY . /auth-api-crossfitlov/
+
+WORKDIR /auth-api-crossfitlov 
+
+RUN go build
+
+FROM debian:9
+
+EXPOSE 8000
+RUN mkdir go
+WORKDIR /go
+COPY --from=compile-image /auth-api-crossfitlov/auth-api-crossfitlov /go/
+COPY --from=compile-image /auth-api-crossfitlov/parameters/parameters.json /go/config/config.json
+
+ENTRYPOINT [ "./auth-api-crossfitlov", "-config", "/go/config/config.json" ]

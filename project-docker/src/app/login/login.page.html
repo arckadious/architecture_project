@@ -1,0 +1,34 @@
+<div class="loginPage">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>Connexion</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <form>
+      <ion-item lines="full">
+        <ion-label position="floating">Email</ion-label>
+        <div></div>
+        <ion-input type="text"[(ngModel)]="person.login" name ="login"  required></ion-input>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label position="floating">Mot de passe</ion-label>
+        <ion-input type="password" [(ngModel)]="person.password" name ="password" required ></ion-input>
+      </ion-item>
+
+      <ion-row>
+        <ion-col>
+          <!-- <ion-button type="submit" color="danger" [disabled] = isLoginValid() [routerLink]="['/swipe']" expand="block">Se connecter</ion-button> -->
+          <ion-button type="submit" color="danger" [disabled] = isLoginValid()  expand="block" (click) = "userLogin()" [routerLink]="['/swipe']">Se connecter</ion-button>
+
+          <!-- <a [routerLink]="['/forgot-password']" class="small-text">Forgot Password?</a> -->
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-content>
+</div>

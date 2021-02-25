@@ -1,0 +1,23 @@
+FROM debian:10 AS compile-image
+
+RUN apt-get update -yq \
+&& apt-get install curl gnupg -yq \
+&& curl -sL https://deb.nodesource.com/setup_10.x | bash \
+&& apt-get install nodejs -yq \
+&& apt-get clean -y
+
+# set working directory
+WORKDIR /app
+
+# install and cache app dependencies
+COPY package.json /app/package.json
+RUN npm install
+RUN npm install -g @angular/cli@11.0.5
+
+COPY . /app
+
+RUN ng build --prod
+
+FROM nginx
+EXPOSE 80
+COPY --from=compile-image /app/dist/project-docker /usr/share/nginx/html

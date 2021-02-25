@@ -1,0 +1,21 @@
+{
+    "database": {
+        "adapter": "mysql",
+        "host": "users-mariadb-crossfitlov",
+        "username": "root",
+        "password": "admin",
+        "port": "3306",
+        "name": "CL",
+        "charset": "UTF8",
+        "maxOpenConns": 6,
+        "maxIdleConns": 1
+    },
+    "auth": {
+        "username": "admin",
+        "password": "admin123",
+        "port": "8000",
+        "hosts":["localhost"],
+        "schemes":"http"
+    },
+    "env":"localhost"
+}

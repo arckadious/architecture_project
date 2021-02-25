@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button  color="success">
+        <ion-button  class ="logo">S'abonner</ion-button>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <img class="logo" src="../../assets/logo.png">
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" color="medium" [routerLink]="['/matchs']" >
+        <ion-icon slot="icon-only" name="chatbubbles-sharp" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>  
+
+  <sw-card-wrapper #cardWrapper>
+    <div class="card" *ngFor="let avatar of avatars, let index = index"
+      [class.visible]="avatar.visible" [class.hidden]="!avatar.visible"
+      swSwipeable
+      (swiped)="swiped($event, index)">
+      <img [src]="avatar.image" [alt]="avatar.name">
+      <h2>{{avatar.name}}, {{avatar.age}}</h2>
+    </div>
+  </sw-card-wrapper>
+
+
+  <div class="card_bg_box">
+    <div class="card_bg_1">
+      <ion-item  *ngFor="let result of results">
+        <ion-label>{{ result }}</ion-label>
+      </ion-item>
+    </div>
+    <div class="card_bg_2"></div>
+  </div>
+
+
+  <div class="button_box">
+    <ion-button (click)="swipeleft()" mode="ios" class="large_button" shape="round" fill="outline" >
+      <ion-icon color="danger" name="close"></ion-icon>
+    </ion-button>
+    <div class="space"></div>
+    <ion-button (click)="swiperight()" mode="ios" class="large_button" shape="round" fill="outline">
+      <ion-icon color="success" name="heart"></ion-icon>
+    </ion-button>
+  </div>
+  
+ 
+</ion-content>
