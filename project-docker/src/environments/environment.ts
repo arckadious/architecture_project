@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  auth_api_config : {
+    auth_api_URL: "http://auth-api-crossfitlov:8000/v1",
+    auth_api_basicauth_login: "admin",
+    auth_api_basicauth_password: "admin123"
+  }
 };
 
 /*

@@ -1,35 +1,41 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'registration',
-    loadChildren: () => import('./registration/registration.module').then( m => m.RegistrationPageModule)
+    loadChildren: () => import('./pages/registration/registration.module').then( m => m.RegistrationPageModule)
   },
   {
     path: 'chat',
-    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
+    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'matchs',
-    loadChildren: () => import('./matchs/matchs.module').then( m => m.MatchsPageModule)
+    loadChildren: () => import('./pages/matchs/matchs.module').then( m => m.MatchsPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'swipe',
-    loadChildren: () => import('./swipe/swipe.module').then( m => m.SwipePageModule)
+    loadChildren: () => import('./pages/swipe/swipe.module').then( m => m.SwipePageModule),
+    canActivate:[AuthGuard]
   },
 ];
 

@@ -104,10 +104,10 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = json.NewEncoder(w).Encode(&out.TokenData{
-		CookieData: http.Cookie{
-			Name:    "token-CL",
-			Value:   tokenString,
-			Expires: expirationTime,
+		TokenInfos: out.TokenInfos{
+			Name:      "token-CL",
+			Value:     tokenString,
+			ExpiresAt: expirationTime.Format("2006-01-02 15:04:05"),
 		},
 		UserInfos: userInfos,
 	})

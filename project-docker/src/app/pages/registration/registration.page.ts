@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Person } from '../services/persons.service';
+//import { Person } from '../../services/persons.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 
@@ -10,7 +10,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class RegistrationPage implements OnInit {
 
-person:Person = new Person();
+//person:Person = new Person();
   
 
 
@@ -21,14 +21,14 @@ person:Person = new Person();
 
   userRegister(){
     let data = {
-      "login": this.person.login,
-      "password": this.person.password,
-      "firstname": this.person.firstname,
-      "boxCity": this.person.boxCity,
-      "biography": this.person.biography,
-      "job": this.person.job,
-      "gender": this.person.gender,
-      "email": this.person.email,
+    //   "login": this.person.login,
+    //   "password": this.person.password,
+    //   "firstname": this.person.firstname,
+    //   "boxCity": this.person.boxCity,
+    //   "biography": this.person.biography,
+    //   "job": this.person.job,
+    //   "gender": this.person.gender,
+    //   "email": this.person.email,
     }
     
     JSON.stringify(data) 

@@ -2,11 +2,15 @@ package out
 
 import (
 	"auth-api-crossfitlov/models/structs/in"
-	"net/http"
 )
 
+type TokenInfos struct {
+	Name      string
+	Value     string
+	ExpiresAt string
+}
 type TokenData struct {
-	CookieData http.Cookie
+	TokenInfos TokenInfos
 	UserInfos  interface{}
 }
 

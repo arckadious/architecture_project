@@ -138,6 +138,7 @@ services:
       - db-authapi
       - frontend
       - authapi-usersapi
+
     # #######################################
     # ##### pour faire des tests postman, à retirer plus tard !!!!
     # ports:

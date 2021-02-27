@@ -1,4 +1,4 @@
-FROM debian:9
+FROM debian:10
 
 ENV GOROOT=/usr/local/go
 ENV PATH=$GOROOT/bin:$PATH 

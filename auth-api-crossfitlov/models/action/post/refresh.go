@@ -70,10 +70,10 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 
 	// Set the new token as the users `token` cookie
 	err = json.NewEncoder(w).Encode(&out.TokenData{
-		CookieData: http.Cookie{
-			Name:    "token-CL",
-			Value:   tokenString,
-			Expires: expirationTime,
+		TokenInfos: out.TokenInfos{
+			Name:      "token-CL",
+			Value:     tokenString,
+			ExpiresAt: expirationTime.Format("2006-01-02 15:04:05"),
 		},
 		UserInfos: nil,
 	})
