@@ -5,10 +5,28 @@
 export const environment = {
   production: false,
   auth_api_config : {
-    auth_api_URL: "http://localhost:30001/v1",
+    URL: "http://localhost:30001/v1",
 
-    auth_api_basicauth_login: "admin",
-    auth_api_basicauth_password: "admin123"
+    basicauth_login: "admin",
+    basicauth_password: "admin123"
+  },
+  message_api_config : {
+    URL: "http://localhost:30009",
+
+    basicauth_login: "admin",
+    basicauth_password: "admin123"
+  },
+  abonnement_api_config : {
+    URL: "http://localhost:30005",
+
+    basicauth_login: "admin",
+    basicauth_password: "admin123"
+  },
+  match_api_config : {
+    URL: "http://localhost:30007",
+
+    basicauth_login: "admin",
+    basicauth_password: "admin123"
   }
 };
 

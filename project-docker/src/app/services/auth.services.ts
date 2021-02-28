@@ -39,11 +39,11 @@ export class AuthService {
         //appel de la brique auth-api pour s'authentifier
         let headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(environment.auth_api_config.auth_api_basicauth_login + ':' + environment.auth_api_config.auth_api_basicauth_password)
+            'Authorization': 'Basic ' + btoa(environment.auth_api_config.basicauth_login + ':' + environment.auth_api_config.basicauth_password)
         }
           
       
-        this.http.post<SigninData>(environment.auth_api_config.auth_api_URL+"/signin", JSON.stringify(data), { headers }).subscribe(
+        this.http.post(environment.auth_api_config.URL+"/signin", JSON.stringify(data), { headers }).subscribe(
             () => {
               console.log('Enregistrement terminé !');
               /*const user: User = {firstname: "yeahh", age: 22, crossfitlovID : 1, };

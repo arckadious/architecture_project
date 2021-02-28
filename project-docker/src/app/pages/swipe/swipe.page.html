@@ -19,7 +19,7 @@
 <ion-content>  
 
   <sw-card-wrapper #cardWrapper>
-    <div class="card" *ngFor="let avatar of avatars, let index = index"
+    <div class="card" *ngFor="let avatar of persons, let index = index"
       [class.visible]="avatar.visible" [class.hidden]="!avatar.visible"
       swSwipeable
       (swiped)="swiped($event, index)">

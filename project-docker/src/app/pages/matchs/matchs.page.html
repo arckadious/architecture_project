@@ -81,7 +81,7 @@
 
 <ion-content *ngFor ="let person of persons">
   <ion-list >
-    <ion-item detail routerLink="/chat">
+    <ion-item detail routerLink="/chat" (click) = "goToRoom(person.id)" >
       <ion-avatar slot="start" >
         <img src="{{person.img}}">
       </ion-avatar>
@@ -89,7 +89,7 @@
         <div class="flex_box">
           <h3>{{person.name}}</h3>
         </div>
-        <p><ion-icon class="text-icon" color="primary" name="done-all"></ion-icon> Listen, I've had a pretty messed up day...</p>
+        <p><ion-icon class="text-icon" color="primary" name="done-all"></ion-icon> Cliquez pour accéder à la conversation</p>
       </ion-label>
     </ion-item>
 
