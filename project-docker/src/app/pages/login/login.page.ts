@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.services';
+import { Router } from '@angular/router';
+
 
 
 
@@ -18,7 +20,7 @@ export class LoginPage implements OnInit {
   login : string = '';
   password:string = '';
 
-  constructor(private modalService: NgbModal, private authService: AuthService) {
+  constructor(private modalService: NgbModal, private authService: AuthService,private router: Router) {
 
    }
 
@@ -27,6 +29,8 @@ export class LoginPage implements OnInit {
 
   signin(): void {
     this.authService.login(this.login, this.password);
+    
+
   }
 
   isLoginValid(): boolean{

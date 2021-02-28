@@ -50,6 +50,7 @@ export class AuthService {
               sessionStorage.setItem('token', JSON.stringify('response: auth'));
               this.subject.next(user);
               this.router.navigate(["/home"]);*/
+              this.router.navigate(['/swipe']);
             },
             (error) => {
               console.log('Erreur ! : ' + error);
