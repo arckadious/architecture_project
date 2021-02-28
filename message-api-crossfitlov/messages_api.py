@@ -13,6 +13,20 @@ URL_AUTHAPI = 'http://auth-api-crossfitlov:8000/v1'
 LOGIN_BASICAUTH_AUTHAPI = 'admin'
 PASSWORD_BASICAUTH_AUTHAPI = 'admin123'
 
+####################
+### CORS middleware
+####################
+def CORS(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    if request.method == 'OPTIONS':
+        response.headers['Access-Control-Allow-Methods'] = 'DELETE, GET, POST, PUT'
+        headers = request.headers.get('Access-Control-Request-Headers')
+        if headers:
+            response.headers['Access-Control-Allow-Headers'] = headers
+        response.status_code = 200
+    return response
+app.after_request(CORS)
+
 #############################################################################
 ### BASIC AUTH
 #############################################################################
@@ -41,6 +55,11 @@ mycursor = mydb.cursor()
 @app.errorhandler(406)
 def resource_not_acceptable(e):
     return jsonify(error=str(e)), 406
+
+#error handler for not found uri requests
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify(error=str(e)), 404
 
 #error handler for service unavailable
 @app.errorhandler(503)

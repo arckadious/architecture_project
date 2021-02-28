@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   auth_api_config : {
     auth_api_URL: "http://localhost:30001/v1",
+
     auth_api_basicauth_login: "admin",
     auth_api_basicauth_password: "admin123"
   }
