@@ -10,16 +10,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngFor ="let msg of messages">
   <div class="bg"></div>
 
-  <ion-item lines="none">
-    <ion-badge color="warning" slot="end">Listen, I've had a pretty messed up day...<ion-note color="medium">21:16 <ion-icon name="done-all"></ion-icon></ion-note></ion-badge>
-  </ion-item>
+    <ion-item lines="none" *ngIf = "msg.id_usr == 0"  >
+      <ion-badge color="warning" slot="end">{{msg.msg_text}} <ion-note color="medium"> <ion-icon name="done-all"></ion-icon></ion-note></ion-badge>
+    </ion-item>
 
-  <ion-item lines="none">
-    <ion-badge color="light" slot="start">It's over baby <ion-note color="medium">21:17</ion-note></ion-badge>
-  </ion-item>
+    <ion-item lines="none" *ngIf = "msg.id_usr != 0" >
+      <ion-badge color="light" slot="start">{{msg.msg_text}}<ion-note color="medium"></ion-note></ion-badge>
+    </ion-item>
 
   
 
