@@ -26,18 +26,7 @@ export class LoginPage implements OnInit {
   }
 
   signin(): void {
-    this.authService.login(this.login, this.password).subscribe(
-      () => {
-        console.log('Enregistrement terminé !');
-        /*const user: User = {firstname: "yeahh", age: 22, crossfitlovID : 1, };
-        sessionStorage.setItem('token', JSON.stringify('response: auth'));
-        this.subject.next(user);
-        this.router.navigate(["/home"]);*/
-      },
-      (error) => {
-        console.log('Erreur ! : ' + error);
-      }
-    );
+    this.authService.login(this.login, this.password);
   }
 
   isLoginValid(): boolean{

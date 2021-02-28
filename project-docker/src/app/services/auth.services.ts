@@ -30,7 +30,7 @@ export class AuthService {
 
     }
 
-    login(login: string, password: string) : Observable<SigninData> {
+    login(login: string, password: string) : void {
         let data = {
           "login": login,
           "password": password
@@ -43,7 +43,18 @@ export class AuthService {
         }
           
       
-        return this.http.post<SigninData>(environment.auth_api_config.auth_api_URL+"/signin", JSON.stringify(data), { headers });
+        this.http.post<SigninData>(environment.auth_api_config.auth_api_URL+"/signin", JSON.stringify(data), { headers }).subscribe(
+            () => {
+              console.log('Enregistrement terminé !');
+              /*const user: User = {firstname: "yeahh", age: 22, crossfitlovID : 1, };
+              sessionStorage.setItem('token', JSON.stringify('response: auth'));
+              this.subject.next(user);
+              this.router.navigate(["/home"]);*/
+            },
+            (error) => {
+              console.log('Erreur ! : ' + error);
+            }
+          );
       
                
     }

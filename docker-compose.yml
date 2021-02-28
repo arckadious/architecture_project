@@ -15,8 +15,8 @@ services:
       MYSQL_DATABASE: CL
     healthcheck:        #vérifier que mariadb est démarré et prêt à accepter des connexions.
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 20
+      timeout: 20s
+      retries: 10
     volumes:
       - auth-mariadb-crossfitlov-volume:/var/lib/mysql  #persistance des données de la base de données
       - ./auth-api-crossfitlov/dump.sql:/docker-entrypoint-initdb.d/dump.sql #initialisation et créations des tables si inexistantes.
@@ -31,8 +31,8 @@ services:
       MYSQL_DATABASE: CL
     healthcheck:        #vérifier que mariadb est démarré et prêt à accepter des connexions.
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 20
+      timeout: 20s
+      retries: 10
     volumes:
       - users-mariadb-crossfitlov-volume:/var/lib/mysql 
       - ./users-api-crossfitlov/dump.sql:/docker-entrypoint-initdb.d/dump.sql
@@ -47,8 +47,8 @@ services:
       MYSQL_DATABASE: CL
     healthcheck:        #vérifier que mariadb est démarré et prêt à accepter des connexions.
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 20
+      timeout: 20s
+      retries: 10
     volumes:
       - abonnement-mariadb-crossfitlov-volume:/var/lib/mysql  #persistance des données de la base de données
       - ./abonnement-api-crossfitlov/dump.sql:/docker-entrypoint-initdb.d/dump.sql #initialisation et créations des tables si inexistantes.
@@ -63,8 +63,8 @@ services:
       MYSQL_DATABASE: CL
     healthcheck:        #vérifier que mariadb est démarré et prêt à accepter des connexions.
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 20
+      timeout: 20s
+      retries: 10
     volumes:
       - message-mariadb-crossfitlov-volume:/var/lib/mysql  #persistance des données de la base de données
       - ./message-api-crossfitlov/dump.sql:/docker-entrypoint-initdb.d/dump.sql #initialisation et créations des tables si inexistantes.
@@ -79,8 +79,8 @@ services:
       MYSQL_DATABASE: CL
     healthcheck:        #vérifier que mariadb est démarré et prêt à accepter des connexions.
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 20
+      timeout: 20s
+      retries: 10
     volumes:
       - match-mariadb-crossfitlov-volume:/var/lib/mysql  #persistance des données de la base de données
       - ./match-api-crossfitlov/dump.sql:/docker-entrypoint-initdb.d/dump.sql #initialisation et créations des tables si inexistantes.
@@ -108,8 +108,6 @@ services:
     volumes:
       - ./project-docker:/app
       - /app/node_modules #volume anonyme, pour empêcher le mount volume d'overwrite le node_modules installé pendant le build de l'image
-    networks: 
-      - frontend
 
   ######## avec build production ########
   # frontend-crossfitlov-prod:
@@ -136,14 +134,10 @@ services:
       - ./auth-api-crossfitlov:/auth-api-crossfitlov
     networks: 
       - db-authapi
-      - frontend
+      - backend
       - authapi-usersapi
-
-    # #######################################
-    # ##### pour faire des tests postman, à retirer plus tard !!!!
-    # ports:
-    #   - "30001:8000"
-    # #######################################
+    ports:
+      - "30001:8000"
 
   ######## avec build production ########
   # auth-api-crossfitlov-prod:
@@ -187,12 +181,9 @@ services:
     networks: 
       - authapi-usersapi
       - db-usersapi
-    # #######################################
-    # ##### pour faire des tests postman, à retirer plus tard !!!!
-    # ports:
-    #   - "30003:8000"
-    # #######################################
-  
+    ports:
+      - "30003:8000"
+
   ######## avec build production ########
   # users-api-crossfitlov-prod:
   #   build:
@@ -231,12 +222,9 @@ services:
         condition: service_healthy #L'api dépend de sa base de données qui doit être démarrée et prête à accepter des connexions.
     networks: 
       - db-abonnementapi
-      - frontend
-    # #######################################
-    # ##### pour faire des tests postman, à retirer plus tard !!!!
-    # ports:
-    #   - "30005:8080"
-    # #######################################
+      - backend
+    ports:
+      - "30005:8080"
 
   # ###############
   # ##### pour faire des tests bdd, à commenter
@@ -263,12 +251,9 @@ services:
         condition: service_healthy #L'api dépend de sa base de données qui doit être démarrée et prête à accepter des connexions.
     networks: 
       - db-matchapi
-      - frontend
-    # #######################################
-    # ##### pour faire des tests postman, à retirer plus tard !!!!
-    # ports:
-    #   - "30007:8080"
-    # #######################################
+      - backend
+    ports:
+      - "30007:8080"
 
   # ###############
   # ##### pour faire des tests bdd, à commenter
@@ -295,13 +280,10 @@ services:
         condition: service_healthy #L'api dépend de sa base de données qui doit être démarrée et prête à accepter des connexions.
     networks: 
       - db-messageapi
-      - frontend
-    # #######################################
-    # ##### pour faire des tests postman, à retirer plus tard !!!!
-    # ports:
-    #   - "30009:8080"
-    # #######################################
-
+      - backend
+    ports:
+      - "30009:8080"
+    
   # ###############
   # ##### pour faire des tests bdd, à commenter
   # message-phpmyadmin-crossfitlov:
@@ -349,9 +331,9 @@ networks:
     driver: bridge
 
   ###
-  # networks entre les micro-services et leur frontend
+  # networks entre les micro-services
   ###
-  frontend:
+  backend:
     driver: bridge
 
   ###

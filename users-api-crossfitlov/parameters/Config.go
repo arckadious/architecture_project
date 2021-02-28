@@ -22,11 +22,10 @@ type conf struct {
 		MaxIdleConns int    `json:"maxIdleConns"`
 	} `json:"database"`
 	Auth struct {
-		Username string   `json:"username"`
-		Password string   `json:"password"`
-		Port     string   `json:"port"`
-		Hosts    []string `json:"hosts"`
-		Schemes  string   `json:"schemes"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Port     string `json:"port"`
+		Schemes  string `json:"schemes"`
 	}
 	Proxy struct {
 		Host string `json:"host"`
