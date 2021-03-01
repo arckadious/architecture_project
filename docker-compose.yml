@@ -180,6 +180,7 @@ services:
       - ./users-api-crossfitlov:/users-api-crossfitlov
     networks: 
       - authapi-usersapi
+      - matchapi-usersapi
       - db-usersapi
     # ports:
     #   - "30003:8000"
@@ -251,6 +252,7 @@ services:
         condition: service_healthy #L'api dépend de sa base de données qui doit être démarrée et prête à accepter des connexions.
     networks: 
       - db-matchapi
+      - matchapi-usersapi
       - backend
     ports:
       - "30007:8080"
@@ -340,4 +342,6 @@ networks:
   # networks inter micro-service
   ###
   authapi-usersapi:
+    driver: bridge
+  matchapi-usersapi:
     driver: bridge

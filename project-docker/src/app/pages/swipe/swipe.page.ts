@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { MatchModalComponent} from '../match-modal/match-modal.component'
 import { Person } from '../../services/persons.service';
 import { MatchsService } from '../../services/matchs.service';
+import { NumberValueAccessor } from '@angular/forms';
 
 
 
@@ -19,6 +20,8 @@ export class SwipePage implements OnInit {
   i: number ;
   results = [];
   persons : any[]; 
+  swipeNumber : number;
+  isSub:boolean
 
   // persons = [
   //   {
@@ -59,8 +62,11 @@ export class SwipePage implements OnInit {
     console.log(this.persons)
     this.currentIndex = this.persons.length - 1;
     console.log(this.currentIndex);
+    console.log(this.matchService.isSub)
 
 
+    this.matchService.isSubscribed();
+    
   }
 
   async showModal(){
@@ -76,6 +82,7 @@ export class SwipePage implements OnInit {
     this.persons[index].visible = false;
     this.results.push(this.persons[index].name + ' swiped ' + event);
     this.currentIndex--;
+    this.swipeNumber--;
     this.i++;
   }
 
@@ -84,12 +91,13 @@ export class SwipePage implements OnInit {
     this.persons[this.currentIndex].visible = false;
     this.results.push(this.persons[this.currentIndex].name + ' swiped false');
     this.currentIndex--;
+    this.swipeNumber--;
     this.i++;
 
   }
 
   swiperight() {
-    this.persons[this.currentIndex].visible = false;
+    this.persons[this.currentIndex].visible = false
     this.results.push(this.persons[this.currentIndex].name + ' swiped true');
     if(this.persons[this.currentIndex].hasSwiped == true){
       this.Person.matchs.push(this.persons[this.currentIndex]);
@@ -99,9 +107,27 @@ export class SwipePage implements OnInit {
       this.matchService.sendMatch()
       this.showModal()
         }
+    this.swipeNumber--;
+
     this.currentIndex--;
     this.i++;
 
+  }
+checkSub(){
+  if (this.matchService.isSub == true){
+
+    this.swipeNumber = 1;
+
+  }else{
+
+  this.swipeNumber = 10000;
+
+}
+}
+  canSwipe(){
+    if(this.swipeNumber == 0){
+      return false;
+    }
   }
 
 }

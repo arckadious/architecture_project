@@ -93,8 +93,8 @@ func newRouter() http.Handler {
 	router.Schemes(parameters.Config.Auth.Schemes)
 
 	//CRUD interface
-	router.HandleFunc("/v1/users", post.CreateUser).Methods("POST", "OPTIONS") //Create a new user
-	//router.HandleFunc("/v1/users", post.GetUsers).Methods("POST","OPTIONS")            //get users by criteria
+	router.HandleFunc("/v1/users", post.CreateUser).Methods("POST", "OPTIONS")          //Create a new user
+	router.HandleFunc("/v1/users/get", post.GetUsers).Methods("POST", "OPTIONS")        //get users by criteria
 	router.HandleFunc("/v1/users/{id}", get.GetUser).Methods("GET", "OPTIONS")          //get one user information
 	router.HandleFunc("/v1/users/{id}", put.UpdateUser).Methods("PUT", "OPTIONS")       //update user information
 	router.HandleFunc("/v1/users/{id}", delete.DeleteUser).Methods("DELETE", "OPTIONS") //delete user information

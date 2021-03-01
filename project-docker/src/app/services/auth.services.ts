@@ -46,7 +46,8 @@ export class AuthService {
             (element) => {
               console.log('Enregistrement terminé !');
               const user: User = element;
-              sessionStorage.setItem('USER', JSON.stringify(user));
+              localStorage.setItem("token-CL", user.tokenInfos.value);
+              user.tokenInfos.value = "******"
               this.subject.next(user);
               this.router.navigate(['/swipe']);
             },
@@ -74,7 +75,7 @@ export class AuthService {
           
       
         this.http.put<User>(environment.auth_api_config.URL+"/signup", JSON.stringify(data), { headers }).subscribe(
-            (element) => {
+            () => {
               console.log('inscription terminé !');
               alert("Inscription effectué, vous pouvez maintenant vous connecter.")
 
@@ -83,13 +84,14 @@ export class AuthService {
             (error) => {
               alert("Certaines informations semblent incorrectes, Veuillez remplir les champs correctement")
               console.log('Erreur ! : ' + error);
+
             }
           );           
     }
 
 
     logout(): void {
-        sessionStorage.removeItem('USER');
+        localStorage.removeItem('token-CL');
         this.subject.next(null);
         this.router.navigate(["/home"]);
     }

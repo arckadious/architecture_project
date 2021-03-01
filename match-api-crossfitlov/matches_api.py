@@ -13,6 +13,13 @@ URL_AUTHAPI = 'http://auth-api-crossfitlov:8000/v1'
 LOGIN_BASICAUTH_AUTHAPI = 'admin'
 PASSWORD_BASICAUTH_AUTHAPI = 'admin123'
 
+##################
+### brique auth
+##################
+URL_USERSAPI = 'http://users-api-crossfitlov:8000/v1'
+LOGIN_BASICAUTH_USERSAPI = 'admin'
+PASSWORD_BASICAUTH_USERSAPI = 'admin123'
+
 ####################
 ### CORS middleware
 ####################
@@ -98,7 +105,16 @@ def checkToken(authorizationHeader) :
     
     return 200, ""
 
+def getUsers() :
 
+    r = None
+    try:
+        r = requests.post(URL_USERSAPI+'/users/get', auth=(LOGIN_BASICAUTH_USERSAPI,PASSWORD_BASICAUTH_USERSAPI), timeout = 5)
+    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
+        return None, 503, "Service unavailable"
+    if r.status_code != 200:
+        return None, 503, "Brique users a retourné le code "+str(r.status_code)
+    return r.json(), 200, ""
 
 
 no_found = {'matche_?' : "No"}
@@ -126,7 +142,67 @@ def matches():
         return jsonify(No_found) 
     else :
         return jsonify(Yes_found)
+
+
+
+@app.route('/api/show/', methods = ['POST'])
+def show() :
+    code, description = checkToken(request.headers.get('X-Authorization'))
+    if not code == 200 : #si le token n'a pas plus être validé, ou alors si le token n'est pas valide
+        abort(code, description=description)
+
+    query = request.get_json()
+
+    mec_courant = query['usr_id'] # Alexis Ren
+
+
+    #récuperation de la liste des utilisateurs
+    userInfosList, code, description = getUsers()
+    if not code == 200 : #si le token n'a pas plus être validé, ou alors si le token n'est pas valide
+        abort(500, description=description)
+
     
+    #[
+    #    {
+    #        "crossfitid"
+    #        "biography"
+    #        "job"
+    #    }
+    #]
+
+    mycursor = mydb.cursor(buffered=True, dictionary=True)
+    mycursor.execute("SELECT * FROM swipes WHERE usr_id = " + mec_courant)
+    sqlresult = mycursor.fetchall()
+
+    # sqlresult = ({usr_id_1:Hugo,usr_id_2:Alexisren},  {usr_id_1:Hugo,usr_id_2:Maxime}, {usr_id_1:Hugo,usr_id_2:Clara})
+
+    idBDDSwipeList = []
+    for _, v in enumerate(sqlresult):
+        idBDDSwipeList.append(v['swipe_with'])
+
+    # userInfosList = ({info:Hugo, info:Alexisren, crossfitlovID:1532}, etc{})
+
+    # for _, v in enumerate(userInfosList):
+    #     listID = v['crossfitlovID']
+
+    for i, v in enumerate(userInfosList):
+        usr_lambda = v["crossfitlovID"]
+        print(v["email"])
+        if str(usr_lambda) == mec_courant:
+            userInfosList.remove(v)
+        elif userInfosList in idBDDSwipeList:##idBDDSwipe.contains(v["crossfitlovID"]:
+            userInfosList.remove(v)
+        else:
+            continue
+    # for i, v in enumerate(idBDDSwipe):
+    #     for u, t in enumerate(listID):
+
+    #         if v == t:
+    #             listID.remove(u)
+
+
+    return jsonify(userInfosList)
+
 @app.route('/api/matches/', methods = ['PUT'])
 def swipes() :
     code, description = checkToken(request.headers.get('X-Authorization'))

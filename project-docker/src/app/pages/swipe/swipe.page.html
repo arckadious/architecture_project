@@ -40,11 +40,11 @@
 
 
   <div class="button_box">
-    <ion-button (click)="swipeleft()" mode="ios" class="large_button" shape="round" fill="outline" >
+    <ion-button (click)="swipeleft()" mode="ios" class="large_button" shape="round" fill="outline" [disabled]="canSwipe()">
       <ion-icon color="danger" name="close"></ion-icon>
     </ion-button>
     <div class="space"></div>
-    <ion-button (click)="swiperight()" mode="ios" class="large_button" shape="round" fill="outline">
+    <ion-button (click)="swiperight()" mode="ios" class="large_button" shape="round" fill="outline" [disabled]="canSwipe()">
       <ion-icon color="success" name="heart"></ion-icon>
     </ion-button>
   </div>

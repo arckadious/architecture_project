@@ -102,6 +102,32 @@ func SelectUser(db *sql.DB, ID string) (userInfos in.UserInfos, userExist bool, 
 	}
 }
 
+func SelectUsers(db *sql.DB) (userInfosList []in.UserInfos, err error) {
+
+	sqlStatement := `SELECT crossfitlovID, firstname, gender, age, boxCity, email, biography, job, created_at FROM dataCL`
+
+	rows, err := db.Query(sqlStatement)
+	if err != nil {
+		return userInfosList, err
+	}
+	for rows.Next() {
+		var userInfos in.UserInfos
+		rows.Scan(&userInfos.CrossfitlovID,
+			&userInfos.Firstname,
+			&userInfos.Gender,
+			&userInfos.Age,
+			&userInfos.BoxCity,
+			&userInfos.Email,
+			&userInfos.Biography,
+			&userInfos.Job,
+			&userInfos.CreatedAt)
+
+		userInfosList = append(userInfosList, userInfos)
+	}
+
+	return userInfosList, nil
+}
+
 func DeleteUser(db *sql.DB, ID string) (userExist bool, err error) {
 
 	sqlStatement := `DELETE FROM dataCL WHERE crossfitlovID=?`

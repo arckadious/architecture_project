@@ -26,7 +26,7 @@ export class MessagesService {
   getMessages(){
     let headers = {
       'Content-Type': 'application/json',
-      'X-Authorization': 'Bearer '+this.user.tokenInfos.value,
+      'X-Authorization': 'Bearer '+localStorage.getItem("token-CL").toString(),
       'Authorization': 'Basic ' + btoa(environment.message_api_config.basicauth_login + ':' + environment.message_api_config.basicauth_password)
     }
 
@@ -41,7 +41,7 @@ export class MessagesService {
       (error) => {
         console.log('Erreur ! : ' + error);
         alert("Vous avez été déconnecté, veuillez vous reconnecter.")
-        this.auth.logout();
+        //this.auth.logout();
       }
     ); 
    }
@@ -54,7 +54,7 @@ export class MessagesService {
       }]
       let headers = {
         'Content-Type': 'application/json',
-        'X-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjEiLCJleHAiOjE2MTQ1NDc3MTB9.XwmNI3kXRxwBg6La_LibyoYDao7jR3NdDbMQpENPV4I',
+        'X-Authorization': 'Bearer '+localStorage.getItem("token-CL").toString(),
         'Authorization': 'Basic ' + btoa(environment.match_api_config.basicauth_login + ':' + environment.match_api_config.basicauth_password)
       }
       this.http.post<Messages[]>(environment.match_api_config.URL+"/api/match", JSON.stringify(data), { headers }).subscribe(
@@ -65,7 +65,7 @@ export class MessagesService {
         (error) => {
           console.log('Erreur ! : ' + error);
           alert("Vous avez été déconnecté, veuillez vous reconnecter.")
-          this.auth.logout();
+          //this.auth.logout();
         }
       ); 
 
