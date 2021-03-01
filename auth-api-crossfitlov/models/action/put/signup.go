@@ -8,6 +8,7 @@ import (
 	"auth-api-crossfitlov/models/structs/out"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -60,7 +61,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//insert en db des credentials
-	err = dbauth.CreatePasswdAndID(db, userRegisterInfos.Credentials.Login, string(hashpasswd))
+	err = dbauth.CreatePasswdAndID(db, strconv.Itoa(crossfitLovID), userRegisterInfos.Credentials.Login, string(hashpasswd))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		logrus.Error(err)

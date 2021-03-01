@@ -66,6 +66,7 @@ func CORS(next http.Handler) http.Handler {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Headers", "X-Accept-Charset,X-Accept,Content-Type,Authorization,Cache-Control,X-Http-Method-Override")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST,PUT,OPTIONS")
 		w.Header().Set("Connection", "Keep-Alive")
 		w.Header().Set("Expires", "-1")
 		w.Header().Set("Keep-Alive", "timeout=5, max=99")
@@ -87,7 +88,6 @@ func newRouter() http.Handler {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.Use(CORS)
-	router.Use(mux.CORSMethodMiddleware(router)) //add a access-control-allow-methods if an OPTIONS method is available on the router.HandleFunc().Methods()
 
 	router.Schemes(parameters.Config.Auth.Schemes)
 

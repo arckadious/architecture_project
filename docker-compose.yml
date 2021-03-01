@@ -255,17 +255,17 @@ services:
     ports:
       - "30007:8080"
 
-  ###############
-  ##### pour faire des tests bdd, à commenter
-  match-phpmyadmin-crossfitlov:
-    image : phpmyadmin:latest
-    ports:
-      - "30008:80"
-    environment: 
-      PMA_HOST: match-mariadb-crossfitlov
-    networks: 
-      - db-matchapi
-  ###############
+  # ###############
+  # ##### pour faire des tests bdd, à commenter
+  # match-phpmyadmin-crossfitlov:
+  #   image : phpmyadmin:latest
+  #   ports:
+  #     - "30008:80"
+  #   environment: 
+  #     PMA_HOST: match-mariadb-crossfitlov
+  #   networks: 
+  #     - db-matchapi
+  # ###############
 
 ################################
 # brique micro-service message #
@@ -284,17 +284,17 @@ services:
     ports:
       - "30009:8080"
     
-  ###############
-  ##### pour faire des tests bdd, à commenter
-  message-phpmyadmin-crossfitlov:
-    image : phpmyadmin:latest
-    ports:
-      - "30010:80"
-    environment: 
-      PMA_HOST: message-mariadb-crossfitlov
-    networks: 
-      - db-messageapi
-  ###############
+  # ###############
+  # ##### pour faire des tests bdd, à commenter
+  # message-phpmyadmin-crossfitlov:
+  #   image : phpmyadmin:latest
+  #   ports:
+  #     - "30010:80"
+  #   environment: 
+  #     PMA_HOST: message-mariadb-crossfitlov
+  #   networks: 
+  #     - db-messageapi
+  # ###############
      
 
 

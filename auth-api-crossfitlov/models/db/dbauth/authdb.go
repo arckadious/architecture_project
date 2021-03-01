@@ -21,7 +21,7 @@ func GetPasswdAndID(login string, db *sql.DB) (ID, encryptedPassword string, use
 
 func GetLastInsertID(db *sql.DB) (ID int, err error) {
 
-	sqlStatement := `SELECT LAST_INSERT_ID()`
+	sqlStatement := `SELECT COUNT(*) FROM dataCL`
 
 	err = db.QueryRow(sqlStatement).Scan(&ID)
 	if err != nil {
@@ -31,18 +31,20 @@ func GetLastInsertID(db *sql.DB) (ID int, err error) {
 	return ID, nil
 }
 
-func CreatePasswdAndID(db *sql.DB, login, encryptedPassword string) error {
+func CreatePasswdAndID(db *sql.DB, ID, login, encryptedPassword string) error {
 	sql := "INSERT INTO dataCL" +
-		"(user_login," +
+		"(crossfitlovID," +
+		"user_login," +
 		"encrypted_passwd) " +
-		"VALUES (?,?)"
+		"VALUES (?,?,?)"
 
 	stmt, err := db.Prepare(sql)
 	if err != nil {
 		return err
 	}
 
-	_, err = stmt.Exec(login,
+	_, err = stmt.Exec(ID,
+		login,
 		encryptedPassword)
 
 	if err != nil {

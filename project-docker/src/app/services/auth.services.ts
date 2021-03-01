@@ -5,6 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
+import { UserInfos } from '../models/user.model';
 
 
 @Injectable({
@@ -50,18 +51,21 @@ export class AuthService {
               this.router.navigate(['/swipe']);
             },
             (error) => {
+              alert("Utilisateur ou mot de passe incorrect.")
               console.log('Erreur ! : ' + error);
             }
           );           
     }
 
-    signup(login: string, password: string) : void {
-        let data = {
-          "login": login,
-          "password": password,
-          "getInfos": true
-        }
+    signup(userInfos: UserInfos, login: string, password: string) : void {
         
+        let data = {
+            credentialsData: {
+                login: login,
+                password : password,
+            },
+            userInfos: userInfos      
+        }
         //appel de la brique auth-api pour s'authentifier
         let headers = {
             'Content-Type': 'application/json',
@@ -69,15 +73,15 @@ export class AuthService {
         }
           
       
-        this.http.post<User>(environment.auth_api_config.URL+"/signin", JSON.stringify(data), { headers }).subscribe(
+        this.http.put<User>(environment.auth_api_config.URL+"/signup", JSON.stringify(data), { headers }).subscribe(
             (element) => {
-              console.log('Enregistrement terminé !');
-              const user: User = element;
-              sessionStorage.setItem('USER', JSON.stringify(user));
-              this.subject.next(user);
-              this.router.navigate(['/swipe']);
+              console.log('inscription terminé !');
+              alert("Inscription effectué, vous pouvez maintenant vous connecter.")
+
+              this.router.navigate(['/login']);
             },
             (error) => {
+              alert("Certaines informations semblent incorrectes, Veuillez remplir les champs correctement")
               console.log('Erreur ! : ' + error);
             }
           );           

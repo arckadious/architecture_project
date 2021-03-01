@@ -13,47 +13,53 @@
       <form>
         <ion-item lines="full">
           <ion-label position="floating">Prénom</ion-label>
-          <ion-input type="text" required [(ngModel)]="person.firstname" name="firstname"></ion-input>
+          <ion-input type="text" required [(ngModel)]="this.userInfos.firstname" name="firstname"></ion-input>
         </ion-item>
-
+        <ion-item lines="full">
+          <ion-label position="floating">Âge</ion-label>
+          <ion-input type="number" max="150" min="18" required [(ngModel)]="this.userInfos.age" name="age"></ion-input>
+        </ion-item>
         <ion-item lines="full">
           <ion-label position="floating">Genre</ion-label>
-          <ion-input type="text" required [(ngModel)]="person.gender" name="firstname"></ion-input>
+          <ion-select required [(ngModel)]="this.userInfos.gender" name="gender">
+            <ion-select-option value="boy">Garçon</ion-select-option>
+            <ion-select-option value="girl">Fille</ion-select-option>
+          </ion-select>
         </ion-item>
 
         <ion-item lines="full">
           <ion-label position="floating">Login</ion-label>
-          <ion-input type="text" required [(ngModel)]="person.login" name="firstname"></ion-input>
+          <ion-input type="text" required [(ngModel)]="this.login" name="login"></ion-input>
         </ion-item>
 
         <ion-item lines="full">
           <ion-label position="floating">Email</ion-label>
-          <ion-input type="text" required [(ngModel)]="person.email" name="email"></ion-input>
+          <ion-input type="text" required [(ngModel)]="this.userInfos.email" name="email"></ion-input>
         </ion-item>
 
         <ion-item lines="full">
           <ion-label position="floating">Mot de passe</ion-label>
-          <ion-input type="password" required [(ngModel)]="person.password" name="password"></ion-input>
+          <ion-input type="password" required [(ngModel)]="this.password" name="password"></ion-input>
         </ion-item>
 
         <ion-item lines="full">
           <ion-label position="floating">Ville</ion-label>
-          <ion-input type="text" required [(ngModel)]="person.boxCity" name="boxCity"></ion-input>
+          <ion-input type="text" required [(ngModel)]="this.userInfos.boxCity" name="boxCity"></ion-input>
         </ion-item>
 
         <ion-item lines="full">
           <ion-label position="floating">Job</ion-label>
-          <ion-input type="text" required [(ngModel)]="person.job" name="job"></ion-input>
+          <ion-input type="text" required [(ngModel)]="this.userInfos.job" name="job"></ion-input>
         </ion-item>
 
         <ion-item lines="full">
           <ion-label position="floating">Bio</ion-label>
-          <ion-input type="text" required [(ngModel)]="person.biography" name="biography"></ion-input>
+          <ion-input type="text" required [(ngModel)]="this.userInfos.biography" name="biography"></ion-input>
         </ion-item>
 
         <ion-row>
           <ion-col>
-            <ion-button type="submit" color="danger" expand="block" (click) = "userRegister()" [routerLink]="['/swipe']">S'inscrire</ion-button>
+            <ion-button type="submit" color="danger" expand="block" (click) = "userRegister()">S'inscrire</ion-button>
           </ion-col>
         </ion-row>
       </form>

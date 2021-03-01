@@ -10,11 +10,15 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 //GetUserInfos read user infos
 func GetUserInfos(ID string) (out.UserInfos, error) {
 	url := parameters.Config.UserAPI.URL + "/users/" + ID
+
+	logrus.Info(url)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
