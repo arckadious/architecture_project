@@ -9,7 +9,7 @@ import { MessagesService  } from '../../services/messages.service';
 })
 export class MatchModalComponent implements OnInit {
   @Input() data: any;
-
+  firstMessage:String;
   constructor(public modalController: ModalController,private messageService: MessagesService) { }
 
   ngOnInit() {}

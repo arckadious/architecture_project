@@ -89,7 +89,7 @@ export class AuthService {
 
 
     logout(): void {
-        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('USER');
         this.subject.next(null);
         this.router.navigate(["/home"]);
     }

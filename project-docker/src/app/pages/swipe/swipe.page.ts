@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { MatchModalComponent} from '../match-modal/match-modal.component'
 import { Person } from '../../services/persons.service';
+import { MatchsService } from '../../services/matchs.service';
+
 
 
 @Component({
@@ -49,7 +51,7 @@ export class SwipePage implements OnInit {
   //   },
   // ];
 
-  constructor(public modalController: ModalController,private Person: Person) {
+  constructor(public modalController: ModalController,private Person: Person,private matchService: MatchsService ) {
     // this.currentIndex = this.persons.length - 1;
   }
   ngOnInit(): void {
@@ -92,6 +94,9 @@ export class SwipePage implements OnInit {
     if(this.persons[this.currentIndex].hasSwiped == true){
       this.Person.matchs.push(this.persons[this.currentIndex]);
       console.log(this.Person.matchs)
+      this.matchService.swipeId = this.persons[this.currentIndex].id;
+      this.matchService.userId = 1
+      this.matchService.sendMatch()
       this.showModal()
         }
     this.currentIndex--;

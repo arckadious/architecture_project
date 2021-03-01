@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Messages } from '../models/messages';
-
+import { User } from '../models/user.model';
+import { AuthService } from 'src/app/services/auth.services';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,9 @@ export class MessagesService {
 
 
   messages : Messages[]
-  constructor(private http: HttpClient) { 
+  user: User
+  constructor(private http: HttpClient, private auth: AuthService) { 
+    this.auth.user.subscribe(data => this.user = data)
 
    
   }
@@ -23,7 +26,7 @@ export class MessagesService {
   getMessages(){
     let headers = {
       'Content-Type': 'application/json',
-      'X-Authorization': 'Bearer ',
+      'X-Authorization': 'Bearer '+this.user.tokenInfos.value,
       'Authorization': 'Basic ' + btoa(environment.message_api_config.basicauth_login + ':' + environment.message_api_config.basicauth_password)
     }
 
@@ -36,8 +39,9 @@ export class MessagesService {
         console.log(msg);
       },
       (error) => {
-        
         console.log('Erreur ! : ' + error);
+        alert("Vous avez été déconnecté, veuillez vous reconnecter.")
+        this.auth.logout();
       }
     ); 
    }
@@ -60,6 +64,8 @@ export class MessagesService {
         },
         (error) => {
           console.log('Erreur ! : ' + error);
+          alert("Vous avez été déconnecté, veuillez vous reconnecter.")
+          this.auth.logout();
         }
       ); 
 
