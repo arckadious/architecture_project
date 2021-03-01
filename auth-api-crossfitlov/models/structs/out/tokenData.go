@@ -5,13 +5,13 @@ import (
 )
 
 type TokenInfos struct {
-	Name      string
-	Value     string
-	ExpiresAt string
+	Name      string `json:"name"`
+	Value     string `json:"value"`
+	ExpiresAt string `json:"expiresAt"`
 }
 type TokenData struct {
-	TokenInfos TokenInfos
-	UserInfos  interface{}
+	TokenInfos TokenInfos  `json:"tokenInfos"`
+	UserInfos  interface{} `json:"userInfos"`
 }
 
 type UserInfos struct {
