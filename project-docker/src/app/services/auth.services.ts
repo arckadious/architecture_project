@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core'
-import { User } from '../models/user.model';
 import { Observable, BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { SigninData } from '../models/signinData.model';
+import { User } from '../models/user.model';
 
 
 @Injectable({
@@ -18,14 +17,12 @@ export class AuthService {
     get user(): Observable<User> {   
         return this.subject.asObservable();
     }
-
+        
     constructor(private router: Router, private http: HttpClient) {
         //subject.next execute l'observable
         const u = JSON.parse(sessionStorage.getItem('USER'));
         if(u != null) {
-            // if(/*si le token n'est pas périmé*/) {
-            //     this.subject.next(u);
-            // }
+            this.subject.next(u);
         }
 
     }
@@ -33,7 +30,8 @@ export class AuthService {
     login(login: string, password: string) : void {
         let data = {
           "login": login,
-          "password": password
+          "password": password,
+          "getInfos": true
         }
         
         //appel de la brique auth-api pour s'authentifier
@@ -43,21 +41,46 @@ export class AuthService {
         }
           
       
-        this.http.post(environment.auth_api_config.URL+"/signin", JSON.stringify(data), { headers }).subscribe(
-            () => {
+        this.http.post<User>(environment.auth_api_config.URL+"/signin", JSON.stringify(data), { headers }).subscribe(
+            (element) => {
               console.log('Enregistrement terminé !');
-              /*const user: User = {firstname: "yeahh", age: 22, crossfitlovID : 1, };
-              sessionStorage.setItem('token', JSON.stringify('response: auth'));
+              const user: User = element;
+              sessionStorage.setItem('USER', JSON.stringify(user));
               this.subject.next(user);
-              this.router.navigate(["/home"]);*/
               this.router.navigate(['/swipe']);
             },
             (error) => {
               console.log('Erreur ! : ' + error);
             }
-          );
+          );           
+    }
+
+    signup(login: string, password: string) : void {
+        let data = {
+          "login": login,
+          "password": password,
+          "getInfos": true
+        }
+        
+        //appel de la brique auth-api pour s'authentifier
+        let headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa(environment.auth_api_config.basicauth_login + ':' + environment.auth_api_config.basicauth_password)
+        }
+          
       
-               
+        this.http.post<User>(environment.auth_api_config.URL+"/signin", JSON.stringify(data), { headers }).subscribe(
+            (element) => {
+              console.log('Enregistrement terminé !');
+              const user: User = element;
+              sessionStorage.setItem('USER', JSON.stringify(user));
+              this.subject.next(user);
+              this.router.navigate(['/swipe']);
+            },
+            (error) => {
+              console.log('Erreur ! : ' + error);
+            }
+          );           
     }
 
 

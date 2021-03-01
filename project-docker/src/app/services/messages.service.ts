@@ -9,6 +9,11 @@ import { Messages } from '../models/messages';
 })
 export class MessagesService {
   currentRoom :  number;
+  userId :  number;
+  swipeId :  number;
+
+
+
   messages : Messages[]
   constructor(private http: HttpClient) { 
 
@@ -18,7 +23,7 @@ export class MessagesService {
   getMessages(){
     let headers = {
       'Content-Type': 'application/json',
-      'X-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjEiLCJleHAiOjE2MTQ1NDc3MTB9.XwmNI3kXRxwBg6La_LibyoYDao7jR3NdDbMQpENPV4I',
+      'X-Authorization': 'Bearer ',
       'Authorization': 'Basic ' + btoa(environment.message_api_config.basicauth_login + ':' + environment.message_api_config.basicauth_password)
     }
 
@@ -31,9 +36,33 @@ export class MessagesService {
         console.log(msg);
       },
       (error) => {
+        
         console.log('Erreur ! : ' + error);
       }
-    );  }
+    ); 
+   }
 
-    sendMatch
+    sendMatch(){
+
+      let data = [{
+        usr_id :  this.userId.toString(),
+        swipe_id :this.swipeId.toString() 
+      }]
+      let headers = {
+        'Content-Type': 'application/json',
+        'X-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjEiLCJleHAiOjE2MTQ1NDc3MTB9.XwmNI3kXRxwBg6La_LibyoYDao7jR3NdDbMQpENPV4I',
+        'Authorization': 'Basic ' + btoa(environment.match_api_config.basicauth_login + ':' + environment.match_api_config.basicauth_password)
+      }
+      this.http.post<Messages[]>(environment.match_api_config.URL+"/api/match", JSON.stringify(data), { headers }).subscribe(
+        (msg) => {
+          this.messages = msg;
+          console.log(msg);
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      ); 
+
+
+    }
 }

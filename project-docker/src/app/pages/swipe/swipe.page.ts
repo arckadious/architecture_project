@@ -90,6 +90,8 @@ export class SwipePage implements OnInit {
     this.persons[this.currentIndex].visible = false;
     this.results.push(this.persons[this.currentIndex].name + ' swiped true');
     if(this.persons[this.currentIndex].hasSwiped == true){
+      this.Person.matchs.push(this.persons[this.currentIndex]);
+      console.log(this.Person.matchs)
       this.showModal()
         }
     this.currentIndex--;

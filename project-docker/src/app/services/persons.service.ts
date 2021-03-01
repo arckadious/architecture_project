@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class Person {
 
-    
+  matchs = [];  
   sexe = ["Boy","Girl"];
   login:string;
   firstname:string;

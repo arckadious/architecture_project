@@ -14,7 +14,7 @@ export class MatchsPage implements OnInit {
 
   ngOnInit() {
 
-    this.persons = this.Person.persons;
+    this.persons = this.Person.matchs;
 
   }
 
