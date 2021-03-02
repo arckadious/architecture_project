@@ -117,8 +117,8 @@ def getUsers() :
     return r.json(), 200, ""
 
 
-no_found = {'matche_?' : "No"}
-Yes_found = {'matche_?' : "Yes"}
+No_found = {'ismatch' : "No"}
+Yes_found = {'ismatch' : "Yes"}
 
 # La requête POST - Retourne un JSON en fonction des informations qui sont spécifiées
 @app.route('/api/matches/', methods = ['POST'])
@@ -130,19 +130,13 @@ def matches():
     query = request.get_json()
         
     for _, dico in enumerate(query):
-        id_1 = dico['id_1']
-        id_2 = dico['id_2']
+        id_1 = dico['usr_id']
         
     mycursor = mydb.cursor(buffered=True, dictionary=True)
-    mycursor.execute("SELECT * FROM matches WHERE usr_id_1 = " + id_1 + " AND usr_id_2 = " + id_2 )
+    mycursor.execute("SELECT usr_id_2 FROM matches WHERE usr_id_1 = " + id_1)
     myresult = mycursor.fetchall()
     
-    if not myresult :
-        print("ERROR : NO MATCHES FOR -------------- usr_id_1 = " + id_1 + ", usr_id_2 = " + id_2 + " --------------")
-        return jsonify(No_found) 
-    else :
-        return jsonify(Yes_found)
-
+    return jsonify(myresult)
 
 
 @app.route('/api/show/', methods = ['POST'])
@@ -153,7 +147,7 @@ def show() :
 
     query = request.get_json()
 
-    mec_courant = query['usr_id'] # Alexis Ren
+    mec_courant = str(query['usr_id']) # Alexis Ren
 
 
     #récuperation de la liste des utilisateurs
@@ -178,22 +172,19 @@ def show() :
 
     idBDDSwipeList = []
     for _, v in enumerate(sqlresult):
-        idBDDSwipeList.append(v['swipe_with'])
+        idBDDSwipeList.append(str(v['swipe_with']))
 
     # userInfosList = ({info:Hugo, info:Alexisren, crossfitlovID:1532}, etc{})
 
     # for _, v in enumerate(userInfosList):
     #     listID = v['crossfitlovID']
-
+    listToReturn = []
     for i, v in enumerate(userInfosList):
-        usr_lambda = v["crossfitlovID"]
+        usr_lambda = str(v["crossfitlovID"])
         print(v["email"])
-        if str(usr_lambda) == mec_courant:
-            userInfosList.remove(v)
-        elif userInfosList in idBDDSwipeList:##idBDDSwipe.contains(v["crossfitlovID"]:
-            userInfosList.remove(v)
-        else:
-            continue
+        if usr_lambda != mec_courant and not (usr_lambda in idBDDSwipeList):
+            listToReturn.append(v)
+        
     # for i, v in enumerate(idBDDSwipe):
     #     for u, t in enumerate(listID):
 
@@ -201,7 +192,7 @@ def show() :
     #             listID.remove(u)
 
 
-    return jsonify(userInfosList)
+    return jsonify(listToReturn)
 
 @app.route('/api/matches/', methods = ['PUT'])
 def swipes() :
@@ -222,10 +213,13 @@ def swipes() :
     
     if not myresult :
         print("ERROR : -------------- La requet sql est vide --------------")
-        return ""
+        return jsonify(No_found) 
     else :
         insert_matches(r_usr_id, r_swipe_id)
-        return ""
+        insert_matches(r_swipe_id, r_usr_id)
+
+        return jsonify(Yes_found) 
+
         
 def insert_matches(id_1, id_2):
     sql = "INSERT INTO matches(usr_id_1, usr_id_2) VALUES (%s, %s)"

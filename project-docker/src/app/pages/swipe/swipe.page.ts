@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { MatchModalComponent} from '../match-modal/match-modal.component'
-import { Person } from '../../services/persons.service';
+//import { Person } from '../../services/persons.service';
 import { MatchsService } from '../../services/matchs.service';
 import { NumberValueAccessor } from '@angular/forms';
 
+import { User, UserInfos } from '../../models/user.model';
+import { IsMatch } from '../../models/matchs';
+import { AuthService } from 'src/app/services/auth.services';
 
 
 @Component({
@@ -19,9 +22,11 @@ export class SwipePage implements OnInit {
   currentIndex: number;
   i: number ;
   results = [];
-  persons : any[]; 
-  swipeNumber : number;
+  swipeNumber : number = 10;
   isSub:boolean
+  user: User
+
+  persons : UserInfos[]
 
   // persons = [
   //   {
@@ -54,15 +59,22 @@ export class SwipePage implements OnInit {
   //   },
   // ];
 
-  constructor(public modalController: ModalController,private Person: Person,private matchService: MatchsService ) {
+  constructor(public modalController: ModalController, private authService: AuthService, private matchService: MatchsService ) {
     // this.currentIndex = this.persons.length - 1;
+    authService.user.subscribe(data => this.user = data);
   }
   ngOnInit(): void {
-    this.persons = this.Person.persons;
-    console.log(this.persons)
-    this.currentIndex = this.persons.length - 1;
-    console.log(this.currentIndex);
-    console.log(this.matchService.isSub)
+    this.matchService.getUsers().subscribe(
+      (element) => {
+        const userList = element;
+        this.persons = userList;
+        
+        console.log(this.persons)
+        this.currentIndex = this.persons.length -1;
+        console.log(this.currentIndex);
+        console.log(this.matchService.isSub)
+      }
+    );
 
 
     this.matchService.isSubscribed();
@@ -73,62 +85,94 @@ export class SwipePage implements OnInit {
     const modal = await this.modalController.create({
       component: MatchModalComponent,
       componentProps: {
-        data: this.persons[this.currentIndex].name
+        data: this.persons[this.currentIndex].firstname
       }
     })
     await modal.present()
   }
   swiped(event: any, index: number) {
-    this.persons[index].visible = false;
-    this.results.push(this.persons[index].name + ' swiped ' + event);
+    if(this.swipeNumber == 0 || this.currentIndex == 0){
+      return;
+    }
+    this.results.push(this.persons[index].firstname + ' swiped ' + event);
     this.currentIndex--;
-    this.swipeNumber--;
-    this.i++;
+    if(this.matchService.isSub == false){
+
+      this.swipeNumber-=5
+    }else{
+
+      this.swipeNumber--
+    }    this.i++;
   }
 
 
   swipeleft() {
-    this.persons[this.currentIndex].visible = false;
-    this.results.push(this.persons[this.currentIndex].name + ' swiped false');
+    if(this.swipeNumber == 0 || this.currentIndex == -1){
+      return;
+    }
+    this.results.push(this.persons[this.currentIndex].firstname + ' swiped false');
     this.currentIndex--;
-    this.swipeNumber--;
+    if(this.matchService.isSub == false){
+
+      this.swipeNumber-=5
+    }else{
+
+      this.swipeNumber--
+    }   
+    console.log(this.swipeNumber)
+
     this.i++;
+
 
   }
 
   swiperight() {
-    this.persons[this.currentIndex].visible = false
-    this.results.push(this.persons[this.currentIndex].name + ' swiped true');
-    if(this.persons[this.currentIndex].hasSwiped == true){
-      this.Person.matchs.push(this.persons[this.currentIndex]);
-      console.log(this.Person.matchs)
-      this.matchService.swipeId = this.persons[this.currentIndex].id;
-      this.matchService.userId = 1
-      this.matchService.sendMatch()
-      this.showModal()
-        }
-    this.swipeNumber--;
-
-    this.currentIndex--;
-    this.i++;
-
-  }
-checkSub(){
-  if (this.matchService.isSub == true){
-
-    this.swipeNumber = 1;
-
-  }else{
-
-  this.swipeNumber = 10000;
-
-}
-}
-  canSwipe(){
-    if(this.swipeNumber == 0){
-      return false;
+    if(this.swipeNumber == 0 || this.currentIndex == -1){
+      return;
     }
+
+    this.matchService.sendSwipe(this.user.userInfos.crossfitlovID, this.persons[this.currentIndex].crossfitlovID).subscribe(
+      (element) => {
+        const ismatch = element;
+        console.log(ismatch.ismatch);
+
+
+        this.results.push(this.persons[this.currentIndex].firstname + ' swiped true');
+        if(ismatch.ismatch == "Yes"){
+          this.showModal()
+        }
+        if(this.matchService.isSub == false){
+    
+          this.swipeNumber-=5
+        }else{
+    
+          this.swipeNumber--
+        }
+        console.log(this.swipeNumber)
+        this.currentIndex--;
+        this.i++;
+
+
+
+      },
+      (error) => {
+        console.log('Erreur ! : ' + error);
+        alert("Vous avez été déconnecté, veuillez vous reconnecter.")
+        //this.auth.logout();
+      }
+    )
+
+    
+ 
   }
+
+  sabonner(){
+
+    this.matchService.userSubscribe();
+  }
+
+
+ 
 
 }
 

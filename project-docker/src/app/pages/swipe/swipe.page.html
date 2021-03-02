@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="primary">
       <ion-button  color="success">
-        <ion-button  class ="logo">S'abonner</ion-button>
+        <ion-button  class ="logo" (click) = "sabonner()">S'abonner</ion-button>
       </ion-button>
     </ion-buttons>
     <ion-title>
@@ -20,10 +20,9 @@
 
   <sw-card-wrapper #cardWrapper>
     <div class="card" *ngFor="let avatar of persons, let index = index"
-      [class.visible]="avatar.visible" [class.hidden]="!avatar.visible"
       swSwipeable
       (swiped)="swiped($event, index)">
-      <img [src]="avatar.image" [alt]="avatar.name">
+      <img src="../../assets/eminem.png" [alt]="avatar.firstname">
       <h2>{{avatar.name}}, {{avatar.age}}</h2>
     </div>
   </sw-card-wrapper>
@@ -40,11 +39,11 @@
 
 
   <div class="button_box">
-    <ion-button (click)="swipeleft()" mode="ios" class="large_button" shape="round" fill="outline" [disabled]="canSwipe()">
+    <ion-button (click)="swipeleft()" mode="ios" class="large_button" shape="round" fill="outline" >
       <ion-icon color="danger" name="close"></ion-icon>
     </ion-button>
     <div class="space"></div>
-    <ion-button (click)="swiperight()" mode="ios" class="large_button" shape="round" fill="outline" [disabled]="canSwipe()">
+    <ion-button (click)="swiperight()" mode="ios" class="large_button" shape="round" fill="outline" >
       <ion-icon color="success" name="heart"></ion-icon>
     </ion-button>
   </div>

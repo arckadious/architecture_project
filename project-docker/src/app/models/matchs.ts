@@ -4,3 +4,7 @@ export interface Matchs {
     swipe_id:number;
     match_id:number;
 }
+
+export interface IsMatch {
+    ismatch: string
+}

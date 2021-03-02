@@ -3,7 +3,9 @@ USE CL;
 CREATE TABLE IF NOT EXISTS swipes(
     swipes_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     usr_id INT,
-    swipe_with INT
+    swipe_with INT,
+    UNIQUE KEY `usr_id` (`usr_id`)
+
 );
 
 CREATE TABLE IF NOT EXISTS matches(

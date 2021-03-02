@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core'
-import { Observable, BehaviorSubject} from 'rxjs';
+import { Observable, BehaviorSubject, interval} from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
 import { UserInfos } from '../models/user.model';
-
+import {takeWhile} from 'rxjs/operators'
 
 @Injectable({
     providedIn: 'root'
@@ -14,18 +14,22 @@ import { UserInfos } from '../models/user.model';
 
 export class AuthService {
     private subject: BehaviorSubject<User> = new BehaviorSubject<User>(null); //subject
-
+    
     get user(): Observable<User> {   
-        return this.subject.asObservable();
+      return this.subject.asObservable();
     }
-        
+    
     constructor(private router: Router, private http: HttpClient) {
-        //subject.next execute l'observable
-        const u = JSON.parse(sessionStorage.getItem('USER'));
-        if(u != null) {
-            this.subject.next(u);
-        }
-
+      //subject.next execute l'observable
+      const u = JSON.parse(sessionStorage.getItem('USER'));
+      if(u != null) {
+        this.subject.next(u);
+      }
+      interval(10000)
+      .pipe(takeWhile(() => !stop)).subscribe(() => {
+        
+      });
+      
     }
 
     login(login: string, password: string) : void {
@@ -46,8 +50,7 @@ export class AuthService {
             (element) => {
               console.log('Enregistrement terminé !');
               const user: User = element;
-              localStorage.setItem("token-CL", user.tokenInfos.value);
-              user.tokenInfos.value = "******"
+              sessionStorage.setItem("USER", JSON.stringify(user));
               this.subject.next(user);
               this.router.navigate(['/swipe']);
             },
@@ -91,7 +94,7 @@ export class AuthService {
 
 
     logout(): void {
-        localStorage.removeItem('token-CL');
+        sessionStorage.removeItem('USER');
         this.subject.next(null);
         this.router.navigate(["/home"]);
     }
